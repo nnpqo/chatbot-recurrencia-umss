@@ -1,2 +1,20 @@
-# Chatbot
-A chatbot based on recurrent neural networks (RNN). Encoder-decoder long short-term memory (LSTM) model has been used. The Encoder-Decoder LSTM is a recurrent neural network designed to address sequence-to-sequence problems. The chatbot has been built with Keras (TensorFlow backened).
+Pasos para ejecutar el proyecto
+
+Crear un entorno virtual
+
+python3 -m venv venv
+
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+
+Instalar dependencias 
+
+pip install -r requirements.txt
+
+Despues ejecutar cada una de las carpetas 
+
+python3 preprocessing.py 
+
+python3 training.py
+
+python3 chatting.py
+
