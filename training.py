@@ -16,7 +16,7 @@ def create_tokenizer(lines):
     return tokenizer
 
 def max_length(lines):
-    return max(len(line.split()) for line in lines) + 1  # +1 para token de inicio/fin
+    return max(len(line.split()) for line in lines) + 1  
 
 def encode_sequences(tokenizer, length, lines):
     X = tokenizer.texts_to_sequences(lines)
@@ -34,38 +34,37 @@ def define_model(src_vocab, tar_vocab, src_timesteps, tar_timesteps, n_units=256
     model.compile(optimizer=Adam(0.001), loss='sparse_categorical_crossentropy')
     return model
 
-# Carga de datos
+
 dataset = load_clean_sentences('both.pkl')
 train = load_clean_sentences('train.pkl')
 test = load_clean_sentences('test.pkl')
 
-# Prepara tokenizer con todas las preguntas y respuestas
+
 all_text = array([d[0] for d in dataset] + [d[1] for d in dataset])
 tokenizer = create_tokenizer(all_text)
 vocab_size = len(tokenizer.word_index) + 1
 
-# Longitudes máximas
+
 max_question_len = max_length([d[0] for d in dataset])
 max_answer_len = max_length([d[1] for d in dataset])
 
-# Prepara datos de entrenamiento
+
 trainX = encode_sequences(tokenizer, max_question_len, [d[0] for d in train])
 trainY = encode_sequences(tokenizer, max_answer_len, [d[1] for d in train])
 
-# Prepara datos de test
+
 testX = encode_sequences(tokenizer, max_question_len, [d[0] for d in test])
 testY = encode_sequences(tokenizer, max_answer_len, [d[1] for d in test])
 
-# Define modelo
+
 model = define_model(vocab_size, vocab_size, max_question_len, max_answer_len)
 
-# Callbacks
 callbacks = [
     EarlyStopping(monitor='val_loss', patience=10),
     ModelCheckpoint('model.h5', save_best_only=True)
 ]
 
-# Entrenamiento
+
 history = model.fit(
     trainX, trainY,
     epochs=300,
@@ -75,8 +74,7 @@ history = model.fit(
     verbose=1
 )
 
-# Guarda tokenizer y configuraciones
-# Guarda tokenizer y configuraciones
+
 from pickle import dump
 dump(tokenizer, open('tokenizer.pkl', 'wb'))
 dump({'max_question_len': max_question_len, 'max_answer_len': max_answer_len}, 

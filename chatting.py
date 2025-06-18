@@ -5,15 +5,15 @@ from keras.preprocessing.sequence import pad_sequences
 from difflib import SequenceMatcher
 import gradio as gr
 
-# ========== CARGA DE MODELO Y CONFIGURACIÓN ==========
+
 def load_assets():
     model = load_model('model.h5')
     tokenizer = load(open('tokenizer.pkl', 'rb'))
     config = load(open('config.pkl', 'rb'))
-    contextual_memory = load(open('qa_pairs.pkl', 'rb'))  # <-- renombrado
+    contextual_memory = load(open('qa_pairs.pkl', 'rb'))  
     return model, tokenizer, config, contextual_memory
 
-# ========== PREDICCIÓN CON EL MODELO PRINCIPAL ==========
+
 def generate_response(input_text, model, tokenizer, config):
     input_text = input_text.lower().strip()
     if not input_text.endswith('?'):
@@ -35,7 +35,7 @@ def generate_response(input_text, model, tokenizer, config):
 
     return ' '.join(words).capitalize()
 
-# ========== MÓDULO DE MEMORIA CONTEXTUAL ==========
+
 def compute_relevance(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
@@ -44,11 +44,11 @@ def neural_memory_query(user_input, contextual_memory):
     best_match = max(contextual_memory, key=lambda pair: compute_relevance(user_input, pair[0]))
     relevance_score = compute_relevance(user_input, best_match[0])
     
-    if relevance_score > 0.5:  # Umbral ajustable
+    if relevance_score > 0.5:  
         return best_match[1]
     return None
 
-# ========== INTERFAZ ==========
+
 model, tokenizer, config, contextual_memory = load_assets()
 
 def chat_interface(message, history):
@@ -60,7 +60,7 @@ def chat_interface(message, history):
 
     return respuesta
 
-# ========== LANZAR ==========
+
 demo = gr.ChatInterface(
     fn=chat_interface,
     title="🤖 Chaski UMSS - Asistente Académico",

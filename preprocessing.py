@@ -7,10 +7,9 @@ from unicodedata import normalize
 from numpy.random import shuffle
 
 def clean_text(text):
-    # Normaliza y limpia el texto
     text = normalize('NFKD', text).encode('ASCII', 'ignore').decode('ASCII')
     text = text.lower().strip()
-    text = re.sub(r'[^a-z0-9¿?¡! ]', ' ', text)  # Mantiene signos y espacios
+    text = re.sub(r'[^a-z0-9¿?¡! ]', ' ', text)  
     text = re.sub(r'\s+', ' ', text)
     return text
 
@@ -31,22 +30,19 @@ def save_clean_data(data, filename):
     dump(data, open(filename, 'wb'))
     print(f'Datos guardados: {filename}')
 
-# ========== EJECUCIÓN PRINCIPAL ==========
+
 if __name__ == '__main__':
     dataset = load_dataset('sample_conversations.csv')
 
-    # Barajar aleatoriamente
     shuffle(dataset)
 
-    # Dividir en entrenamiento y prueba
     train, test = dataset[:100], dataset[100:]
 
-    # Guardar los archivos
     save_clean_data(dataset, 'both.pkl')
     save_clean_data(train, 'train.pkl')
     save_clean_data(test, 'test.pkl')
 
-    # Guardar las preguntas/respuestas para fallback
+
     qa_pairs = [(q, r) for q, r in dataset]
     save_clean_data(qa_pairs, 'qa_pairs.pkl')
 
