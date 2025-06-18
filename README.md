@@ -25,4 +25,9 @@ source venv/bin/activate        # En Windows: venv\Scripts\activate
 ```bash
 pip install -r requirements.txt
 ```
-
+### 3. Ejecutar cada script del proyecto
+```bash
+python3 preprocessing.py
+python3 training.py
+python3 chatting.py
+```
