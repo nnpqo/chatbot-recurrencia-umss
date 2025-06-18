@@ -20,4 +20,9 @@ Este proyecto implementa un chatbot académico entrenado con una red neuronal re
 ```bash
 python3 -m venv venv
 source venv/bin/activate        # En Windows: venv\Scripts\activate
+```
+### 2. Instalar Dependencias
+```bash
+pip install -r requirements.txt
+```
 
